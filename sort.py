@@ -1,9 +1,10 @@
 noc = 0
 nos = 0
 
+
 # Bubble Sort
 def bubble_sort(arr):
-    noc = 0  # num of comparation
+    noc = 0  # num of comparison
     nos = 0  # num of swapping
     n = len(arr)
     for i in range(n):
@@ -18,7 +19,7 @@ def bubble_sort(arr):
 
 # Selection Sort
 def selection_sort(arr):
-    noc = 0  # num of comparation
+    noc = 0  # num of comparison
     nos = 0  # num of swapping
     n = len(arr)
     for i in range(n):
@@ -33,7 +34,7 @@ def selection_sort(arr):
 
 # Insertion Sort
 def insertion_sort(arr):
-    noc = 0  # num of comparation
+    noc = 0  # num of comparison
     nos = 0  # num of swapping
     n = len(arr)
     for i in range(n - 1):
@@ -50,7 +51,7 @@ def insertion_sort(arr):
 
 # Shell Sort
 def shell_sort(arr):
-    noc = 0  # num of comparation
+    noc = 0  # num of comparison
     nos = 0  # num of swapping
     n = len(arr)
     gap = round(n / 2)
@@ -129,11 +130,44 @@ def quick_sort(arr, left, right):
     quick_sort(arr, storeIndex+1, right)
     return arr
 
+
+# Heap Sort
+def heap_sort(arr):
+    n = len(arr)
+    first = int(n/2-1)
+    for start in range(first,-1,-1):
+        max_heapify(arr,start,n-1)
+    for end in range(n-1,0,-1):
+        arr[end],arr[0] = arr[0],arr[end]
+        max_heapify(arr,0,end-1)
+    return arr
+
+
+def max_heapify(arr,start,end):
+    global noc
+    global nos
+    root = start
+    while True:
+        child = root*2 +1
+        noc += 1
+        if child > end : break
+        noc += 1
+        if child+1 <= end and arr[child] < arr[child+1] :
+            child = child+1
+        noc+=1
+        if arr[root] < arr[child] :
+            nos += 1
+            arr[root],arr[child] = arr[child],arr[root]
+            root = child
+        else :
+            break
+
+
 def print_stat(noc, nos):
     if nos != -1:
-        print("\tnum. of comparation done : " + str(noc) + "\n\tnum. of swapping done : " + str(nos))
+        print("\tnum. of comparison done : " + str(noc) + "\n\tnum. of swapping done : " + str(nos))
     else:
-        print("\tnum. of comparation done : " + str(noc))
+        print("\tnum. of comparison done : " + str(noc))
 
 
 array = [11, 1, 13, 3, 2, 6, 10, 5, 7, 14, 4, 9, 12, 0, 8]
@@ -161,7 +195,6 @@ f = merge_sort(array.copy())
 print_stat(noc, -1)
 noc = 0
 nos = 0
-
 print(str(array) + " \n\t>> " + str(f))
 
 print("\nNo.6 Quick Sort:")
@@ -172,7 +205,6 @@ noc = 0
 nos = 0
 
 print("\nNo.7 Heap Sort:")
-f = merge_sort(array.copy())
-#print_stat(noc_ms, -1)
-#print(str(array) + " \n\t>> " + str(f))
-
+f = heap_sort(array.copy())
+print_stat(noc, nos)
+print(str(array) + " \n\t>> " + str(f))
