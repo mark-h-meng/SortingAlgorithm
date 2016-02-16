@@ -77,7 +77,7 @@ def merge_sort(arr):
     n = len(arr)
     if n <= 1:
         return arr
-    half = round(n/2)
+    half = round(n / 2)
     left = merge_sort(arr[:half])
     right = merge_sort(arr[half:])
     return merge(left, right)
@@ -87,9 +87,9 @@ def merge_sort(arr):
 def merge(left, right):
     global noc
     sorted_result = []
-    l_index=0
-    r_index=0
-    while l_index<len(left) and r_index<len(right):
+    l_index = 0
+    r_index = 0
+    while l_index < len(left) and r_index < len(right):
         noc += 1
         if left[l_index] < right[r_index]:
             sorted_result.append(left[l_index])
@@ -109,7 +109,7 @@ def quick_sort(arr, left, right):
     global noc
     global nos
     # return arr if the size of it is 1
-    if left>=right:
+    if left >= right:
         return arr
     # the pivot was selected as the rightmost element
     pivot = arr[right]
@@ -120,47 +120,65 @@ def quick_sort(arr, left, right):
         noc += 1
         if arr[i] <= pivot:
             if i != storeIndex:
-                nos +=1
+                nos += 1
                 arr[storeIndex], arr[i] = arr[i], arr[storeIndex]
             storeIndex += 1
     # now all the element in range of [storeIndex, right-1] are greater than pivot
     arr[right], arr[storeIndex] = arr[storeIndex], arr[right]
     # now the storeIndex is the loc of pivot
-    quick_sort(arr, left, storeIndex-1)
-    quick_sort(arr, storeIndex+1, right)
+    quick_sort(arr, left, storeIndex - 1)
+    quick_sort(arr, storeIndex + 1, right)
     return arr
 
 
 # Heap Sort
 def heap_sort(arr):
     n = len(arr)
-    first = int(n/2-1)
-    for start in range(first,-1,-1):
-        max_heapify(arr,start,n-1)
-    for end in range(n-1,0,-1):
-        arr[end],arr[0] = arr[0],arr[end]
-        max_heapify(arr,0,end-1)
+    first = int(n / 2 - 1)
+    for start in range(first, -1, -1):
+        max_heapify(arr, start, n - 1)
+    for end in range(n - 1, 0, -1):
+        arr[end], arr[0] = arr[0], arr[end]
+        max_heapify(arr, 0, end - 1)
     return arr
 
 
-def max_heapify(arr,start,end):
+def max_heapify(arr, start, end):
     global noc
     global nos
     root = start
     while True:
-        child = root*2 +1
+        child = root * 2 + 1
         noc += 1
-        if child > end : break
+        if child > end: break
         noc += 1
-        if child+1 <= end and arr[child] < arr[child+1] :
-            child = child+1
-        noc+=1
-        if arr[root] < arr[child] :
+        if child + 1 <= end and arr[child] < arr[child + 1]:
+            child = child + 1
+        noc += 1
+        if arr[root] < arr[child]:
             nos += 1
-            arr[root],arr[child] = arr[child],arr[root]
+            arr[root], arr[child] = arr[child], arr[root]
             root = child
-        else :
+        else:
             break
+
+
+# Counting Sort (Non Comparison)
+def counting_sort(arr, k):
+    global noc
+    counter = [0] * (k + 1)
+    # if arr[5]=9, then the 9th item in counter will increase by 1.then all the items in counter[9:] will increase by 1
+    for i in arr:
+        counter[i] += 1
+    new_index = 0;
+    for i in range(len(counter)):
+        noc += 1
+        # counter[i] > 0 means there is one or more items has value of 'i'
+        while 0 < counter[i]:
+            arr[new_index] = i
+            new_index += 1
+            counter[i] -= 1
+    return arr
 
 
 def print_stat(noc, nos):
@@ -198,7 +216,7 @@ nos = 0
 print(str(array) + " \n\t>> " + str(f))
 
 print("\nNo.6 Quick Sort:")
-f = quick_sort(array.copy(),0,len(array)-1)
+f = quick_sort(array.copy(), 0, len(array) - 1)
 print_stat(noc, nos)
 print(str(array) + " \n\t>> " + str(f))
 noc = 0
@@ -207,4 +225,11 @@ nos = 0
 print("\nNo.7 Heap Sort:")
 f = heap_sort(array.copy())
 print_stat(noc, nos)
+print(str(array) + " \n\t>> " + str(f))
+noc = 0
+nos = 0
+
+print("\nNo.8 Counting Sort:")
+f = counting_sort(array.copy(), 14)
+print_stat(noc, -1)
 print(str(array) + " \n\t>> " + str(f))
